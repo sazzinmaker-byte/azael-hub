@@ -1,52 +1,24 @@
--- Menu Base - Exemplo GUI para Roblox (Krnl)
--- Criado apenas como exemplo educativo
+--// Setting \--
+local range = 15
 
--- Criando a ScreenGui
-local ScreenGui = Instance.new("ScreenGui")
-local Frame = Instance.new("Frame")
+--// Variable \--
+local player = game:GetService("Players").LocalPlayer
 
--- Botões
-local AimbotButton = Instance.new("TextButton")
-local ESPButton = Instance.new("TextButton")
-
--- Ativar GUI
-ScreenGui.Parent = game.CoreGui
-
--- Configuração do Frame (menu)
-Frame.Parent = ScreenGui
-Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Preto
-Frame.BackgroundTransparency = 0.4 -- Transparente
-Frame.Position = UDim2.new(0.35, 0, 0.25, 0)
-Frame.Size = UDim2.new(0, 300, 0, 200)
-Frame.Active = true
-Frame.Draggable = true -- Menu pode ser arrastado
-
--- Botão Aimbot
-AimbotButton.Parent = Frame
-AimbotButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-AimbotButton.Size = UDim2.new(0, 250, 0, 40)
-AimbotButton.Position = UDim2.new(0.08, 0, 0.2, 0)
-AimbotButton.Text = "Aimbot"
-AimbotButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-AimbotButton.Font = Enum.Font.SourceSans
-AimbotButton.TextSize = 20
-
-AimbotButton.MouseButton1Click:Connect(function()
-    print("Aimbot ativado (placeholder)")
-    -- termine o código do aimbot aqui
-end)
-
--- Botão ESP
-ESPButton.Parent = Frame
-ESPButton.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
-ESPButton.Size = UDim2.new(0, 250, 0, 40)
-ESPButton.Position = UDim2.new(0.08, 0, 0.5, 0)
-ESPButton.Text = "ESP"
-ESPButton.TextColor3 = Color3.fromRGB(255, 255, 255)
-ESPButton.Font = Enum.Font.SourceSans
-ESPButton.TextSize = 20
-
-ESPButton.MouseButton1Click:Connect(function()
-    print("ESP ativado (placeholder)")
-    -- termine o código do ESP aqui
+--// Script \--
+game:GetService("RunService").RenderStepped:Connect(function()
+    local p = game.Players:GetPlayers()
+    for i = 2, #p do local v = p[i].Character
+        if v and v:FindFirstChild("Humanoid") and v.Humanoid.Health > 0 and v:FindFirstChild("HumanoidRootPart") and player:DistanceFromCharacter(v.HumanoidRootPart.Position) <= range then
+            local tool = player.Character and player.Character:FindFirstChildOfClass("Tool")
+            if tool and tool:FindFirstChild("Handle") then
+                tool:Activate()
+                for i,v in next, v:GetChildren() do
+                    if v:IsA("BasePart") then
+                        firetouchinterest(tool.Handle,v,0)
+                        firetouchinterest(tool.Handle,v,1)
+                    end
+                end
+            end
+        end
+    end
 end)
